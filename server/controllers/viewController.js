@@ -1,6 +1,6 @@
-const Service = require('./service.js');
+const Service = require('../services/viewService.js');
 
-class Controller {
+class ViewController {
 	constructor() {
 		this.service = new Service();
 	}
@@ -10,4 +10,4 @@ class Controller {
 	}
 }
 
-module.exports = Controller;
+module.exports = ViewController;

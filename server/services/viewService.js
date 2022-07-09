@@ -3,7 +3,7 @@ const fsPromises = require('fs/promises');
 const { join, extname } = require('path');
 const { createReadStream } = require('fs');
 
-const { publicDir } = require('./config');
+const { publicDir } = require('../config');
 
 class Service {
 	createStream(filename) {

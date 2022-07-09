@@ -1,7 +1,8 @@
-const http = require("http")
+require('dotenv').config();
+const http = require("http");
 
 const handleRoutes = require("./routes");
 
 const server = http.createServer(handleRoutes);
 
-server.listen(8000).on('listening', () => console.log("server running baby!!!"))
+server.listen(3000).on('listening', () => console.log("server running baby!!!"))
