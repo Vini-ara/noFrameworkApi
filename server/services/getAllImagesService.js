@@ -1,12 +1,21 @@
 const fs = require('fs');
-const getDbTable = require('../database/index');
+const DbConnection = require('../database/index');
 
 class GetAllImagesService {
   async execute() {
-    await getDbTable();
-//    const db = await getDbTable();
+    const db = new DbConnection();
 
-//    const images = db.collection('images').find();
+    const matoseco = await db.getMatoSecoDb()
+
+    const images = matoseco.collection("images").find({ x : 1})
+
+    console.log(await images.toArray())
+    //await matoseco.collection("images").insertOne(
+     // {bird: {name: "Tucano Toco", scientificName: "Ramphastos Toco"}, url: "http://seila.com", metadata: {}}
+    //)
+    await db.client.close();
+
+//    const images = db.collection('images').find({});
 
 
  //   return images;

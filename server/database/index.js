@@ -2,20 +2,16 @@ const { MongoClient } = require('mongodb');
 
 const url = process.env.MONGO_URL;
 
+class DbConnection {
+  constructor() {
+    this.client = new MongoClient(url);
+  }
 
-async function getDbTable() {
-  try {
-    const client = new MongoClient(url);
-
-    await client.connect(); 
-
-    console.log(client.db("matoseco").collection("images").find())
-
-    return client.db("matoseco")
-  } finally {
-    await client.close();
+  async getMatoSecoDb() {
+    await this.client.connect()
+    return this.client.db("matoseco")
   }
 }
 
-module.exports = getDbTable;
+module.exports = DbConnection;
 

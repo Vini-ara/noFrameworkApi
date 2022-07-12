@@ -24,10 +24,7 @@ async function routes(req, res)  {
   }
 
   if(url === '/api/images' && method === 'GET') {
-    console.log('hey, I got called')
     const images = await getAllImagesController.execute(); 
-
-    console.log(images)
   }
   
   if(url === '/api/images' && method === 'POST') {
