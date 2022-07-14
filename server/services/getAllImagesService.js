@@ -1,4 +1,3 @@
-const fs = require('fs');
 const DbConnection = require('../database/index');
 
 class GetAllImagesService {
@@ -7,18 +6,11 @@ class GetAllImagesService {
 
     const matoseco = await db.getMatoSecoDb()
 
-    const images = matoseco.collection("images").find({ x : 1})
+    const images = matoseco.collection("images").find({}).toArray();
 
-    console.log(await images.toArray())
-    //await matoseco.collection("images").insertOne(
-     // {bird: {name: "Tucano Toco", scientificName: "Ramphastos Toco"}, url: "http://seila.com", metadata: {}}
-    //)
     await db.client.close();
 
-//    const images = db.collection('images').find({});
-
-
- //   return images;
+    return images;
   }
 } 
 

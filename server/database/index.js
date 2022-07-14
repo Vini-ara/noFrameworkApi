@@ -9,6 +9,7 @@ class DbConnection {
 
   async getMatoSecoDb() {
     await this.client.connect()
+
     return this.client.db("matoseco")
   }
 }

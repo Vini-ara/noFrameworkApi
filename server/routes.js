@@ -2,9 +2,11 @@ const { publicDir, ContentTypes } = require('./config');
 
 const GetAllImagesController = require('./controllers/getAllImagesController');
 const  ViewController = require('./controllers/viewController');
+const AddImagesController = require('./controllers/addImageController');
 
 const viewController = new ViewController();
 const getAllImagesController = new GetAllImagesController();
+const addImagesController = new AddImagesController();
 
 async function routes(req, res)  {
   const { url, method } = req;
@@ -25,10 +27,24 @@ async function routes(req, res)  {
 
   if(url === '/api/images' && method === 'GET') {
     const images = await getAllImagesController.execute(); 
+
+    res.writeHead(200 , {
+      'Content-Type': 'application/json',
+    });
+
+    return res.end(JSON.stringify(images));
   }
   
   if(url === '/api/images' && method === 'POST') {
+    await addImagesController.execute(req, res) 
 
+    return res.end();
+  }
+
+  if(url.includes('/api/images') && method === 'DELETE') {
+    console.log(req.url);
+
+    res.end();
   }
 
   if(method === 'GET') {
