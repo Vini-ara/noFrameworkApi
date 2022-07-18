@@ -25,6 +25,12 @@ async function routes(req, res)  {
     return stream.pipe(res);
   }
 
+  if(url === '/admin' && method === 'GET') {
+    const { stream } = await viewController.getFileStream('/admin.html');
+
+    return stream.pipe(res);
+  }
+
   if(url === '/api/images' && method === 'GET') {
     const images = await getAllImagesController.execute(); 
 
