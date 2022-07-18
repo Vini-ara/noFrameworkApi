@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Mato-Seco Fotos Admin Page</title>
+  </head>
+  <body> 
+    <header style="margin-bottom: 10rem; display: flex; justify-content: flex-start; align-items: center; background-color: #25283D;" id="header">
+      <div class="h-logo"> 
+        <a href="index.html" id="h-Logo">
+          <h1>Mato seco</h1>
+        </a>
+      </div>
+    </header>
+    <main>
+      <section> 
+        <div>
+          <nav>
+            <button class="active">
+              Insert
+            </button>
+            <button>
+              Edit/Delete
+            </button>
+          </nav>
+        </div>
+
+        <div class="content">
+          <div class="filesAdded empty">
+            <p>Photos Added</p>
+          </div>
+
+          <form>
+            <div>
+              <label for="birdName">Bird name</label>  
+              <input type="text" name="birdName">
+              <label for="file">File</label>
+              <input type="file" name="file" accept=".jpg,.jpeg,.JPG">
+            </div>
+            <button type="submit">Add Photo</button>
+          </form>
+        </div>
+      </section> 
+    </main>
+    <footer>
+        <h4>Mato Seco</h4>
+    </footer>
+  </body>
+</html>

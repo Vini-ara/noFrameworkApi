@@ -1,0 +1,100 @@
+:root {
+    --cian:#09BC8A;
+    --dark-blue:#25283D;
+}
+
+/* main frame styles */
+main {
+  padding-top: 7rem;
+}
+
+.content {
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+/* page nav selector */
+nav {
+  width: 100vw;
+  display: flex; 
+  justify-content: center;
+}
+
+nav button {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--dark-blue);
+
+  font-size: 3rem;
+  font-weight: bold;
+
+  position: relative;
+
+  cursor: pointer;
+}
+
+nav button.active {
+  color: var(--cian);
+}
+
+nav button.active::before {
+  content: '';
+  height: 1rem;
+  min-width: 100%;
+  position: absolute;  
+  bottom: -5px;
+  left: 0; 
+  background: var(--dark-blue);
+}
+
+nav button + button {
+  margin-left: 3rem;
+}
+
+.filesAdded {
+  margin: 4rem auto 0;
+  width: 80%;
+  height: 7rem;
+  border: 5px dashed var(--dark-blue);
+  border-radius: 1rem;
+  display: flex;
+  align-items: center; 
+  justify-content: center;
+}
+
+.filesAdded p {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--dark-blue);
+}
+
+
+form {
+  margin: 2rem auto 0; 
+  padding: 1rem 1.5rem;
+  width: 80%;
+  height: fit-content;
+
+  background: var(--dark-blue);
+  border-radius: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+form div label{
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: .5rem;
+}
+
+form div input + label{
+  margin-top: .5rem;
+}
