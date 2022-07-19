@@ -1,6 +1,6 @@
 :root {
-    --cian:#09BC8A;
-    --dark-blue:#25283D;
+  --cian:#09BC8A;
+  --dark-blue:#25283D;
 }
 
 /* main frame styles */
@@ -98,3 +98,38 @@ form div label{
 form div input + label{
   margin-top: .5rem;
 }
+
+form div input[type="text"] {
+  background: var(--dark-blue);
+  filter: brightness(1.7);
+  border-style: none;
+  outline: none;
+  border-radius: .5rem;
+  padding: .2rem .4rem;
+  color: white;
+}
+
+form div input[type="text"]:focus {
+  outline: var(--cian) 3px solid;
+}
+
+form div p input[type="file"] {
+  height: 100%;
+  width: 100%;
+}
+
+.file-upload-button {
+  margin-top: 1rem;
+  padding: .25rem .75rem;
+  cursor: pointer;
+  background-color: var(--cian);
+  border-radius: .5rem;
+  color: white; 
+  width: fit-content;
+  transition: all .2s;
+}
+
+.file-upload-button:hover {
+  filter: brightness(0.8);
+}
+

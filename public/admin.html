@@ -41,8 +41,10 @@
             <div>
               <label for="birdName">Bird name</label>  
               <input type="text" name="birdName">
-              <label for="file">File</label>
-              <input type="file" name="file" accept=".jpg,.jpeg,.JPG">
+              <div id="file-upload-container">
+                <label for="file-upload" class="file-upload-button">File</label>
+                <input type="file" id="file-upload" accept=".jpg,.jpeg,.JPG" hidden>
+              </div>
             </div>
             <button type="submit">Add Photo</button>
           </form>
@@ -52,5 +54,6 @@
     <footer>
         <h4>Mato Seco</h4>
     </footer>
+    <script src="./admin.js"></script>
   </body>
 </html>
