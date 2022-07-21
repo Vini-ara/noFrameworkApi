@@ -1,9 +1,14 @@
 const fileInput = document.getElementById('file-upload')
-const textInput = document.getElementById('bird-name')
+
+const commonNameInput = document.getElementById('bird-name')
+const scientificNameInput = document.getElementById('scientific-name')
+
 const textInputContainer = document.getElementById('name-input')
 const fileInputContainer = document.getElementById('file-upload-container')
+
 const imgContainer = document.createElement('span')
 const uploadPreviewImg = document.createElement('img')
+
 const suggestionListContainer = document.getElementById('suggestion')
 
 const { birds } = await fetch('brazilBirds.json').then(response => response.json())
@@ -18,7 +23,7 @@ document.addEventListener('click', e => {
 
   let safeZoneXstart = suggestionListContainer.getBoundingClientRect().x;
   let safeZoneXend = suggestionListContainer.getBoundingClientRect().x + suggestionListContainer.getBoundingClientRect().width;
-  let safeZoneYstart = textInput.getBoundingClientRect().y;
+  let safeZoneYstart = commonNameInput.getBoundingClientRect().y;
   let safeZoneYend = suggestionListContainer.getBoundingClientRect().y + suggestionListContainer.getBoundingClientRect().height;
 
   if(!(clickXstart >= safeZoneXstart && clickXend <= safeZoneXend && clickYstart >= safeZoneYstart && clickYend <= safeZoneYend)) {
@@ -26,21 +31,23 @@ document.addEventListener('click', e => {
   }
 })
 
-textInput.addEventListener('focusin', () => {
+commonNameInput.addEventListener('focusin', () => {
   if(matches.length > 0) suggestionListContainer.classList.add('active')
 })
 
 suggestionListContainer.addEventListener('click', e => {
-  if(e.path[0].nodeName.toLowerCase() === 'i') {
-    textInput.value = e.path[1].innerText.split('\n')[0];
+  if(e.target.nodeName.toLowerCase() === 'i') {
+    scientificNameInput.value = e.target.innerText;
+    commonNameInput.value = e.target.parentElement.innerText.split('\n')[0];
   } else {
-    textInput.value = e.target.innerText.split('\n')[0];
+    commonNameInput.value = e.target.innerText.split('\n')[0];
+    scientificNameInput.value = e.target.innerText.split('\n')[1];
   }
 
   suggestionListContainer.classList.remove('active')
 })
 
-textInput.addEventListener('input', e => {
+commonNameInput.addEventListener('input', e => {
   matches = []
 
   if(e.target.value.length < 2) {
