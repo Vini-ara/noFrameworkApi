@@ -96,8 +96,17 @@ form {
   margin-bottom: .5rem;
 }
 
+/* name input suggestion */
 
-.form-content input[type="text"] {
+.name-input {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: fit-content;
+  width: 100%;
+}
+
+.name-input input[type="text"] {
   background: var(--dark-blue);
   filter: brightness(1.7);
   border-style: none;
@@ -107,11 +116,72 @@ form {
   color: white;
 }
 
-.form-content input[type="text"]:focus {
+.name-input input[type="text"]:focus {
   outline: var(--cian) 3px solid;
 }
 
+.suggestion {
+  width: 100%; 
+  height: 10rem;
 
+
+  position: absolute;
+
+  background: var(--dark-blue);
+
+  top: calc(100% + 3px); 
+  left: 0;
+
+  filter: brightness(1.5);
+  border-radius: .5rem;
+
+  display: none;
+  visibility: hidden;
+
+  overflow-y: scroll;
+}
+
+.suggestion::-webkit-scrollbar {
+  width: 10px;
+}
+
+.suggestion::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, .2);
+  border-radius: .5rem;
+}
+
+.suggestion.active {
+  display: flex; 
+  flex-direction: column;
+
+  visibility: visible;
+}
+
+.suggestion p {
+  width: 100%; 
+  padding: .5rem 1rem;
+
+  color: white;
+
+  font-size: 1.25rem; 
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: .5rem;
+  transition: .2s; 
+}
+
+.suggestion p:hover {
+  filter: brightness(.7);
+  background: var(--dark-blue);
+}
+
+.suggestion p i {
+  font-size: 1rem;
+  font-weight: normal;
+  color: var(--cian);
+}
+
+/* file input */
 .file-upload-container {
   margin-top: 1rem;
   display: flex;

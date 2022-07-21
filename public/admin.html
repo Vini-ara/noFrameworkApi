@@ -39,11 +39,16 @@
 
           <form>
             <div class="form-content">
-              <label for="birdName">Bird name</label>  
-              <input type="text" name="birdName" required>
+              <div class="name-input" id="name-input">
+                <label for="birdName">Bird name</label>  
+                <input type="text" name="birdName" id="bird-name" required autocomplete="off">
+                <div class="suggestion" id="suggestion">
+                </div>
+              </div>
+
               <div class="file-upload-container" id="file-upload-container">
                 <label for="file-upload" class="file-upload-button">File</label>
-                <input type="file" id="file-upload" accept=".jpg,.jpeg,.JPG" hidden required>
+                <input type="file" id="file-upload" accept=".jpg,.jpeg,.JPG" name="file-upload" hidden>
               </div>
             </div>
             <button type="submit">Add Photo</button>

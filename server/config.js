@@ -9,7 +9,8 @@ const ContentTypes = {
     '.css': 'text/css',
     '.jpg': 'image/jpeg',
     '.JPG': 'image/jpeg',
-    '.svg': 'image/svg+xml'
+    '.svg': 'image/svg+xml',
+    '.json': 'application/json'
 }
 
 module.exports = {
