@@ -1,5 +1,7 @@
 const fileInput = document.getElementById('file-upload')
 
+const photoForm = document.getElementById('photo-form')
+
 const commonNameInput = document.getElementById('bird-name')
 const scientificNameInput = document.getElementById('scientific-name')
 
@@ -10,10 +12,14 @@ const imgContainer = document.createElement('span')
 const uploadPreviewImg = document.createElement('img')
 
 const suggestionListContainer = document.getElementById('suggestion')
+const imagesSubmitedPreviewContainer = document.getElementById('images-submited-preview')
 
 const { birds } = await fetch('brazilBirds.json').then(response => response.json())
 
 let matches = []
+
+let imagesSubmited = []
+let imagesSubmitedPreview = []
 
 document.addEventListener('click', e => {
   let clickXstart = e.target.getBoundingClientRect().x;
@@ -115,4 +121,11 @@ imgContainer.addEventListener('click', function() {
     imgContainer.removeChild(child)
     fileInputContainer.removeChild(imgContainer)
   }
+})
+
+photoForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  imagesSubmited.push(e)
+  
+  imagesSubmitedPreviewContainer.appendChild(uploadPreviewImg)
 })
