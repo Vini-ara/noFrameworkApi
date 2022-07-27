@@ -1,25 +1,29 @@
-const fileInput = document.getElementById('file-upload')
+const fileInput = document.getElementById('file-upload');
 
-const photoForm = document.getElementById('photo-form')
+const photoForm = document.getElementById('photo-form');
 
-const commonNameInput = document.getElementById('bird-name')
-const scientificNameInput = document.getElementById('scientific-name')
+const commonNameInput = document.getElementById('bird-name');
+const scientificNameInput = document.getElementById('scientific-name');
 
-const textInputContainer = document.getElementById('name-input')
-const fileInputContainer = document.getElementById('file-upload-container')
+const textInputContainer = document.getElementById('name-input');
+const fileInputContainer = document.getElementById('file-upload-container');
 
-const imgContainer = document.createElement('span')
-const uploadPreviewImg = document.createElement('img')
+const imgContainer = document.createElement('span');
+const uploadPreviewImg = document.createElement('img');
 
-const suggestionListContainer = document.getElementById('suggestion')
-const imagesSubmitedPreviewContainer = document.getElementById('images-submited-preview')
+const suggestionListContainer = document.getElementById('suggestion');
+const imagesSubmittedPreviewContainer = document.getElementById('images-submitted-preview');
 
-const { birds } = await fetch('brazilBirds.json').then(response => response.json())
+const submitAllButton = document.getElementById('submit-all');
 
-let matches = []
+const { birds } = await fetch('brazilBirds.json').then(response => response.json());
 
-let imagesSubmited = []
-let imagesSubmitedPreview = []
+let matches = [];
+
+let imagesSubmitted = [];
+let isImagesSubmittedEmpty = true;
+
+let imagesSubmittedPreview = [];
 
 document.addEventListener('click', e => {
   let clickXstart = e.target.getBoundingClientRect().x;
@@ -125,7 +129,68 @@ imgContainer.addEventListener('click', function() {
 
 photoForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  imagesSubmited.push(e)
   
-  imagesSubmitedPreviewContainer.appendChild(uploadPreviewImg)
+  let info = {
+    commonName: commonNameInput.value,
+    scientificName: scientificNameInput.value,
+    image: uploadPreviewImg.src
+  }
+
+  imagesSubmitted.push(info)
+
+  const newPreviewImg = document.createElement('img')
+
+  newPreviewImg.src = info.image;
+  newPreviewImg.alt = "image submitted"
+
+  let newPreviewWrapper = document.createElement('span');
+  newPreviewWrapper.classList.add('img-preview-wrapper');
+  newPreviewWrapper.classList.add(`${imagesSubmitted.length - 1}`);
+  newPreviewWrapper.appendChild(newPreviewImg);
+
+  newPreviewWrapper.addEventListener('click', (e) => {
+    const listIdx = Number(e.target.classList[1]);
+
+    if(listIdx == NaN) return;
+
+    imagesSubmitted.splice(listIdx, 1, '');
+
+    checkImagesSubmitted();
+
+    if(isImagesSubmittedEmpty) {
+      imagesSubmitted = [];
+      imagesSubmittedPreviewContainer.classList.add("empty");
+      submitAllButton.disabled = true;
+    }
+
+    imagesSubmittedPreviewContainer.removeChild(e.target);
+  })
+  
+  imagesSubmittedPreviewContainer.classList.remove("empty");
+  imagesSubmittedPreviewContainer.appendChild(newPreviewWrapper);
+
+  let formImagePreview = imgContainer.firstElementChild;
+
+  imgContainer.removeChild(formImagePreview)
+  fileInputContainer.removeChild(imgContainer)
+
+  matches = [];
+
+  photoForm.reset();
+
+  checkImagesSubmitted();
+
+  if(!isImagesSubmittedEmpty) {
+    submitAllButton.disabled = false;
+  } 
 })
+
+function checkImagesSubmitted() {
+  let isEmpty = true; 
+
+  imagesSubmitted.forEach(e => {
+    if(typeof(e) == "object") isEmpty = false;
+  })
+
+  isImagesSubmittedEmpty = isEmpty;
+}

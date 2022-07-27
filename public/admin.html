@@ -33,7 +33,7 @@
         </div>
 
         <div class="content">
-          <div class="filesAdded empty" id="images-submited-preview">
+          <div class="filesAdded empty" id="images-submitted-preview">
             <p>Photos Added</p>
           </div>
 
@@ -49,11 +49,12 @@
 
               <div class="file-upload-container" id="file-upload-container">
                 <label for="file-upload" class="file-upload-button">File</label>
-                <input type="file" id="file-upload" accept=".jpg,.jpeg,.JPG" name="file-upload" hidden>
+                <input type="file" id="file-upload" accept=".jpg,.jpeg,.JPG" name="file-upload" hidden required>
               </div>
             </div>
             <button type="submit">Add Photo</button>
           </form>
+          <button class="submit-all" id="submit-all" disabled> Submit All </button> 
         </div>
       </section> 
     </main>

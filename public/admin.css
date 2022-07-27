@@ -10,12 +10,16 @@ main {
 
 .content {
   min-height: 100vh;
-  min-width: 100vw;
+  min-width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* page nav selector */
 nav {
-  width: 100vw;
+  width: 100%;
   display: flex; 
   justify-content: center;
 }
@@ -58,17 +62,69 @@ nav button + button {
   height: 7rem;
   border: 5px dashed var(--dark-blue);
   border-radius: 1rem;
+  padding: 0 .5rem;
   display: flex;
   align-items: center; 
+  justify-content: start;
+}
+
+.filesAdded.empty {
   justify-content: center;
 }
 
 .filesAdded p {
+  display: none;
+  visibility: hidden;
+}
+
+.filesAdded.empty p {
+  display: block;
+  visibility: visible;
   font-size: 3rem;
   font-weight: bold;
   color: var(--dark-blue);
 }
 
+.filesAdded img {
+  height: 5rem;
+  width: 5rem;
+  border-radius: .5rem;
+}
+
+.img-preview-wrapper {
+  margin-right: .5rem;
+  height: 5rem;
+  width: 5rem;
+  border-radius: .5rem;
+
+  position: relative;
+}
+
+.img-preview-wrapper::before {
+  content: '\2715';
+  color: white;
+  font-size: 1.5rem;
+  line-height: 5rem;
+  text-align: center;
+
+  position: absolute;
+  top: 0; 
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  border-radius: .5rem;
+  cursor: pointer;
+
+  background-color: #000;
+  opacity: 0;
+
+  transition: .2s;
+}
+
+.img-preview-wrapper:hover::before {
+  opacity: .4;
+}
 
 form {
   margin: 2rem auto 0; 
@@ -276,4 +332,35 @@ form button[type="submit"] {
 form button[type='submit']:hover {
   filter: brightness(0.8);
   transition: .2s;
+}
+
+.submit-all {
+  margin: 1rem auto 0;
+  height: 4rem;
+  width: 80%;
+  background-color: var(--cian);
+
+  outline: none; 
+  border: none;
+  border-radius: .5rem;
+
+  color: var(--dark-blue);
+  font-size: 2rem;  
+  text-align: center; 
+  font-weight: bold; 
+
+  padding: .5rem 1rem;
+
+  cursor: pointer;
+
+  transition: all .2s; 
+}
+
+.submit-all:hover {
+  filter: brightness(.8);
+}
+
+.submit-all[disabled] {
+  filter: brightness(.7);
+  cursor: not-allowed;
 }
