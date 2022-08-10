@@ -1,86 +1,235 @@
-const fileInput = document.getElementById('file-upload');
+var birds;
 
-const photoForm = document.getElementById('photo-form');
+const Form = {
+  form: document.getElementById('photo-form'),
+  photo: {
+    element: document.getElementById('file-upload'),
+    input: e => {
+      if(e.target.files.length === 0) return;
 
-const commonNameInput = document.getElementById('bird-name');
-const scientificNameInput = document.getElementById('scientific-name');
+      var reader = new FileReader();
 
-const textInputContainer = document.getElementById('name-input');
-const fileInputContainer = document.getElementById('file-upload-container');
+      reader.onload = function(a) {
+        Form.preview.img.element.src = a.target.result
+      }
 
-const imgContainer = document.createElement('span');
-const uploadPreviewImg = document.createElement('img');
+      reader.readAsDataURL(e.target.files[0]);
 
-const suggestionListContainer = document.getElementById('suggestion');
-const imagesSubmittedPreviewContainer = document.getElementById('images-submitted-preview');
+      Form.preview.img.element.setAttribute('alt', "image preview");
+      Form.preview.img.element.classList.add("img-input-preview")
 
-const submitAllButton = document.getElementById('submit-all');
+      Form.preview.imgWrapper.element.append(Form.preview.img.element)
 
-const { birds } = await fetch('brazilBirds.json').then(response => response.json());
+      Form.preview.container.element.appendChild(Form.preview.imgWrapper.element);
+    }
+  },
+  commonName: {
+    element: document.getElementById('bird-name'),
+    focus: () => {
+      if(Form.suggestion.matches.length > 0) Form.suggestion.container.element.classList.add('active');
+    },
+    input: e => {
+      Form.suggestion.matches = [];
 
-let matches = [];
+      if(e.target.value.length < 2) {
+        Form.suggestion.container.element.classList.remove('active');
+        return;
+      }
 
-let imagesSubmitted = [];
-let isImagesSubmittedEmpty = true;
+      birds.forEach(bird => {
+        if(bird.common.includes(e.target.value) && Form.suggestion.matches.length < 10)
+          Form.suggestion.matches.push(bird);
+      });
 
-let imagesSubmittedPreview = [];
+      populateSuggestion(Form.suggestion.matches);
 
-document.addEventListener('click', e => {
-  let clickXstart = e.target.getBoundingClientRect().x;
-  let clickXend = e.target.getBoundingClientRect().x + e.target.getBoundingClientRect().width;
-  let clickYstart = e.target.getBoundingClientRect().y;
-  let clickYend = e.target.getBoundingClientRect().y + e.target.getBoundingClientRect().height;
+      if(Form.suggestion.matches.length > 0) 
+        Form.suggestion.container.element.classList.add('active');
+      else 
+        Form.suggestion.container.element.classList.remove('active');
+    },
+  },
+  scientificName: {
+    element: document.getElementById('scientific-name'),
+  },
+  preview: {
+    container: {
+      element: document.getElementById('file-upload-container')
+    },
+    imgWrapper: { 
+      element: document.createElement('span'),
+      click: () => {
+        Form.photo.element.value = "";
 
-  let safeZoneXstart = suggestionListContainer.getBoundingClientRect().x;
-  let safeZoneXend = suggestionListContainer.getBoundingClientRect().x + suggestionListContainer.getBoundingClientRect().width;
-  let safeZoneYstart = commonNameInput.getBoundingClientRect().y;
-  let safeZoneYend = suggestionListContainer.getBoundingClientRect().y + suggestionListContainer.getBoundingClientRect().height;
+        Form.preview.imgWrapper.element.removeChild(Form.preview.img.element);
+        Form.preview.container.element.removeChild(Form.preview.imgWrapper.element);
+      }
+    },
+    img: {
+      element: document.createElement('img'),
+    },
+  }, 
+  suggestion: {
+    container: {
+      element: document.getElementById('suggestion'),
+      click: e => {
+        if(e.target.nodeName.toLowerCase() === 'i') {
+          Form.scientificName.element.value = e.target.innerText;
+          Form.commonName.element.value = e.target.parentElement.innerText.split('\n')[0];
+        } else {
+          Form.scientificName.element.value = e.target.innerText.split('\n')[1];
+          Form.commonName.element.value = e.target.innerText.split('\n')[0];
+        }
 
-  if(!(clickXstart >= safeZoneXstart && clickXend <= safeZoneXend && clickYstart >= safeZoneYstart && clickYend <= safeZoneYend)) {
-    suggestionListContainer.classList.remove('active')
+        Form.suggestion.container.element.classList.remove('active')
+      }
+    },
+    matches: [],
+  },
+  clear: () => {
+    Form.form.reset();
+    Form.suggestion.matches = [];
   }
-})
+};
 
-commonNameInput.addEventListener('focusin', () => {
-  if(matches.length > 0) suggestionListContainer.classList.add('active')
-})
+const AddedPhotos = {
+  container: document.getElementById('images-submitted-preview'),
+  list: [],
+  isListEmpty: true,
+  checkIsListEmpty: () => {
+    let isEmpty = true; 
 
-suggestionListContainer.addEventListener('click', e => {
-  if(e.target.nodeName.toLowerCase() === 'i') {
-    scientificNameInput.value = e.target.innerText;
-    commonNameInput.value = e.target.parentElement.innerText.split('\n')[0];
-  } else {
-    commonNameInput.value = e.target.innerText.split('\n')[0];
-    scientificNameInput.value = e.target.innerText.split('\n')[1];
+    AddedPhotos.list.forEach(e => {
+      if(typeof(e) === "object") isEmpty = false;
+    })
+
+    if(isEmpty) {
+      AddedPhotos.list = [];
+      AddedPhotos.container.classList.add("empty");
+      AddedPhotos.submit.element.disabled = true;
+    }
+
+    AddedPhotos.isListEmpty = isEmpty;
+  },
+  submit: {
+    element: document.getElementById('submit-all'),
+    click: () => {
+      const data = JSON.stringify(AddedPhotos.list);
+      Api.post(data);
+      AddedPhotos.clear();
+
+      Form.clear();
+    } 
+  },
+  clear: () => {
+    AddedPhotos.list = [];
+    AddedPhotos.checkIsListEmpty();
+
+    while(AddedPhotos.container.lastElementChild.tagName === "SPAN") {
+      AddedPhotos.container.removeChild(AddedPhotos.container.lastElementChild)
+    }
   }
+}
 
-  suggestionListContainer.classList.remove('active')
-})
+const App = {
+  setUp: () => {
+    document.addEventListener('click', e => {
+      let clickXstart = e.target.getBoundingClientRect().x;
+      let clickXend = e.target.getBoundingClientRect().x + e.target.getBoundingClientRect().width;
+      let clickYstart = e.target.getBoundingClientRect().y;
+      let clickYend = e.target.getBoundingClientRect().y + e.target.getBoundingClientRect().height;
 
-commonNameInput.addEventListener('input', e => {
-  matches = []
+      let safeZoneXstart = Form.suggestion.container.element.getBoundingClientRect().x;
+      let safeZoneXend = Form.suggestion.container.element.getBoundingClientRect().x + Form.suggestion.container.element.getBoundingClientRect().width;
+      let safeZoneYstart = Form.commonName.element.getBoundingClientRect().y;
+      let safeZoneYend = Form.suggestion.container.element.getBoundingClientRect().y + Form.suggestion.container.element.getBoundingClientRect().height;
 
-  if(e.target.value.length < 2) {
-    suggestionListContainer.classList.remove('active')
-    return
+      if(!(clickXstart >= safeZoneXstart && clickXend <= safeZoneXend && clickYstart >= safeZoneYstart && clickYend <= safeZoneYend)) {
+        Form.suggestion.container.element.classList.remove('active')
+      }
+    })
+
+    Form.commonName.element.addEventListener('focusin', Form.commonName.focus)
+
+    Form.commonName.element.addEventListener('input', Form.commonName.input)
+
+    Form.suggestion.container.element.addEventListener('click', Form.suggestion.container.click)
+
+    Form.photo.element.addEventListener('input', Form.photo.input)
+
+    Form.preview.imgWrapper.element.addEventListener('click', Form.preview.imgWrapper.click);
+
+    Form.form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      let fields = {
+        commonName: Form.commonName.element.value,
+        scientificName: Form.scientificName.element.value,
+        image: Form.preview.img.element.src
+      }
+
+      AddedPhotos.list.push(fields)
+
+      const addedImg = document.createElement('img')
+      addedImg.src = fields.image;
+      addedImg.alt = "image to be submitted"
+
+      let addedImgWrapper = document.createElement('span');
+      addedImgWrapper.classList.add('img-preview-wrapper');
+      addedImgWrapper.classList.add(`${AddedPhotos.list.length - 1}`);
+      addedImgWrapper.appendChild(addedImg);
+
+      addedImgWrapper.addEventListener('click', (e) => {
+        const listIdx = Number(e.target.classList[1]);
+
+        if(listIdx == NaN) return;
+
+        AddedPhotos.list.splice(listIdx, 1, '');
+
+        AddedPhotos.checkIsListEmpty();
+
+        AddedPhotos.container.removeChild(e.target);
+      })
+      
+      AddedPhotos.container.classList.remove("empty");
+      AddedPhotos.container.appendChild(addedImgWrapper);
+
+      Form.preview.container.element.removeChild(Form.preview.imgWrapper.element);
+
+      Form.suggestion.matches = [];
+
+      Form.clear();
+
+      AddedPhotos.checkIsListEmpty();
+
+      if(!AddedPhotos.isListEmpty) AddedPhotos.submit.element.disabled = false; 
+    })
+
+    AddedPhotos.submit.element.addEventListener('click', AddedPhotos.submit.click);
+  },
+  init: async () => {
+    let birdData = await fetch('brazilBirds.json').then(response => response.json());
+    birds = birdData.birds
+    App.setUp();
   }
+}
 
-  birds.forEach(bird => {
-    if(bird.common.includes(e.target.value) && matches.length < 10)
-      matches.push(bird)
-  })
-
-  populateSuggestion(matches)
-
-  if(matches.length > 0) 
-    suggestionListContainer.classList.add('active')
-  else 
-    suggestionListContainer.classList.remove('active')
-})
+const Api = {
+  post: async (body) => {
+    const opt = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: "POST",
+      body: body
+    }
+    await fetch('/api/images', opt);
+  }
+}
 
 function populateSuggestion(matches) {
-  while(suggestionListContainer.firstChild) {
-    suggestionListContainer.removeChild(suggestionListContainer.firstChild)
+  while(Form.suggestion.container.firstChild) {
+    Form.suggestion.container.removeChild(Form.suggestion.container.firstChild)
   }
 
   matches.forEach(bird => {
@@ -93,104 +242,8 @@ function populateSuggestion(matches) {
     suggestion.appendChild(document.createElement('br'))
     suggestion.appendChild(sciName)
 
-    suggestionListContainer.appendChild(suggestion)
+    Form.suggestion.container.element.appendChild(suggestion)
   })
 }
 
-fileInput.addEventListener('input', function(e) {
-  if(e.target.files.length > 0) {
-    var reader = new FileReader();
-
-    reader.onload = function(a) {
-      uploadPreviewImg.src = a.target.result
-    }
-
-    reader.readAsDataURL(e.target.files[0]);
-
-    uploadPreviewImg.setAttribute('alt', "image preview");
-    uploadPreviewImg.classList.add("img-input-preview")
-
-    imgContainer.append(uploadPreviewImg)
-
-    fileInputContainer.appendChild(imgContainer);
-  }
-})
-
-imgContainer.addEventListener('click', function() {
-  if(fileInput.files.length > 0) {
-    fileInput.value = ""
-
-    let child = imgContainer.firstElementChild;
-
-    imgContainer.removeChild(child)
-    fileInputContainer.removeChild(imgContainer)
-  }
-})
-
-photoForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  
-  let info = {
-    commonName: commonNameInput.value,
-    scientificName: scientificNameInput.value,
-    image: uploadPreviewImg.src
-  }
-
-  imagesSubmitted.push(info)
-
-  const newPreviewImg = document.createElement('img')
-
-  newPreviewImg.src = info.image;
-  newPreviewImg.alt = "image submitted"
-
-  let newPreviewWrapper = document.createElement('span');
-  newPreviewWrapper.classList.add('img-preview-wrapper');
-  newPreviewWrapper.classList.add(`${imagesSubmitted.length - 1}`);
-  newPreviewWrapper.appendChild(newPreviewImg);
-
-  newPreviewWrapper.addEventListener('click', (e) => {
-    const listIdx = Number(e.target.classList[1]);
-
-    if(listIdx == NaN) return;
-
-    imagesSubmitted.splice(listIdx, 1, '');
-
-    checkImagesSubmitted();
-
-    if(isImagesSubmittedEmpty) {
-      imagesSubmitted = [];
-      imagesSubmittedPreviewContainer.classList.add("empty");
-      submitAllButton.disabled = true;
-    }
-
-    imagesSubmittedPreviewContainer.removeChild(e.target);
-  })
-  
-  imagesSubmittedPreviewContainer.classList.remove("empty");
-  imagesSubmittedPreviewContainer.appendChild(newPreviewWrapper);
-
-  let formImagePreview = imgContainer.firstElementChild;
-
-  imgContainer.removeChild(formImagePreview)
-  fileInputContainer.removeChild(imgContainer)
-
-  matches = [];
-
-  photoForm.reset();
-
-  checkImagesSubmitted();
-
-  if(!isImagesSubmittedEmpty) {
-    submitAllButton.disabled = false;
-  } 
-})
-
-function checkImagesSubmitted() {
-  let isEmpty = true; 
-
-  imagesSubmitted.forEach(e => {
-    if(typeof(e) == "object") isEmpty = false;
-  })
-
-  isImagesSubmittedEmpty = isEmpty;
-}
+await App.init();

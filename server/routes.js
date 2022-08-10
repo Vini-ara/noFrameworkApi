@@ -2,7 +2,7 @@ const { publicDir, ContentTypes } = require('./config');
 
 const GetAllImagesController = require('./controllers/getAllImagesController');
 const  ViewController = require('./controllers/viewController');
-const AddImagesController = require('./controllers/addImageController');
+const AddImagesController = require('./controllers/addImagesController');
 
 const viewController = new ViewController();
 const getAllImagesController = new GetAllImagesController();
@@ -43,6 +43,7 @@ async function routes(req, res)  {
   
   if(url === '/api/images' && method === 'POST') {
     await addImagesController.execute(req, res) 
+    //
 
     return res.end();
   }
