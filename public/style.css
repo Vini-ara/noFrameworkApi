@@ -12,11 +12,10 @@
 }
 
 body {
-    background:rgb(250, 237, 178);
+    background: rgb(250, 237, 178);
 
     min-width: 100%;
 }
-
 
 /* --------- Header ------ */
 header {
@@ -69,9 +68,7 @@ nav span {
     position: relative;
 
     height: 100vh;
-    width: 100%;
-
-    
+    width: 100%;    
 }
 
 .background-image {
@@ -98,7 +95,6 @@ nav span {
     opacity: 0.8;
 }
 
-
 #m-about-content-container {
     width: 100%;
     height: 100vh;
@@ -118,7 +114,6 @@ nav span {
 #m-logo {
     width: 50vw;
     height: 100%;
-
 }
 
 #m-division-bar{

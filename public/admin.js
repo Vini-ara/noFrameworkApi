@@ -1,5 +1,26 @@
 var birds;
 
+const Page = {
+  nav: {
+    insert: {
+      element: document.getElementById("insertSelector"),
+      click: () => {
+
+      }
+    },
+    edit: {
+      element: document.getElementById("editSelector"),
+      click: () => {
+
+      }
+    } 
+  },
+  section: {
+    addPhoto: document.getElementById("addPhoto"),
+    editPhoto: document.getElementById("editPhoto")
+  } 
+}
+
 const Form = {
   form: document.getElementById('photo-form'),
   photo: {
