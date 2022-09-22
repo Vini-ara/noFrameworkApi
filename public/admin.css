@@ -365,17 +365,10 @@ form button[type='submit']:hover {
   cursor: not-allowed;
 }
 
-.content.addPhoto {
-  visibility: hidden;
-  display: none;
-  opacity: 0;
-} 
 
 /* Edit/Remove images component*/
 
-.content.editPhoto {
-  margin-top: 5rem;
-}
+
 
 .card {
   width: 70%;
