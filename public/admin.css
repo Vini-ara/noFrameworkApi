@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 :root {
   --cian:#09BC8A;
   --dark-blue:#25283D;
@@ -365,10 +366,7 @@ form button[type='submit']:hover {
   cursor: not-allowed;
 }
 
-
 /* Edit/Remove images component*/
-
-
 
 .card {
   width: 70%;
@@ -404,5 +402,3 @@ form button[type='submit']:hover {
   margin-left: auto;
   margin-right: 1rem;
 }
-
-

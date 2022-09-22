@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var birds;
 
 const Page = {
@@ -261,8 +262,8 @@ const Api = {
 }
 
 function populateSuggestion(matches) {
-  while(Form.suggestion.container.firstChild) {
-    Form.suggestion.container.removeChild(Form.suggestion.container.firstChild)
+  while(Form.suggestion.container.element.firstChild) {
+    Form.suggestion.container.element.removeChild(Form.suggestion.container.element.firstChild)
   }
 
   matches.forEach(bird => {

@@ -6,7 +6,7 @@ class GetAllImagesService {
 
     const matoseco = await db.getMatoSecoDb()
 
-    const images = matoseco.collection("images").find({}).toArray();
+    const images = await matoseco.collection('images').find({}).toArray();
 
     await db.client.close();
 

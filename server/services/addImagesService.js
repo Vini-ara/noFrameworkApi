@@ -6,8 +6,7 @@ class AddImagesService {
     let chunks = [];
 
     async function onEnd() {
-      let [data] = JSON.parse(Buffer.concat(chunks))
-      
+      let data = JSON.parse(Buffer.concat(chunks))
       await this.postData(data); 
     }
 
@@ -19,9 +18,11 @@ class AddImagesService {
   async postData(data) {
     const db = new DbConnection();
 
-    const matoseco = await db.getMatoSecoDb()
+    const matoseco = await db.getMatoSecoDb();
 
-    matoseco.collection("images").insertOne(data)
+    console.log(data)
+
+    await matoseco.collection("images").insertMany(data);
     
     await db.client.close();
   }

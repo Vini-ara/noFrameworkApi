@@ -1,6 +1,6 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 
-const url = process.env.MONGO_URL;
+const url = process.env.MATO_SECO;
 
 class DbConnection {
   constructor() {
@@ -10,7 +10,7 @@ class DbConnection {
   async getMatoSecoDb() {
     await this.client.connect()
 
-    return this.client.db("matoseco")
+    return this.client.db("MatoSeco")
   }
 }
 
