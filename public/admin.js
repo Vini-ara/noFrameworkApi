@@ -222,14 +222,15 @@ const Api = {
       },
       method: "POST",
       body: body
-    }
+    };
+
     await fetch('/api/images', opt);
   }
 }
 
 function populateSuggestion(matches) {
-  while(Form.suggestion.container.firstChild) {
-    Form.suggestion.container.removeChild(Form.suggestion.container.firstChild)
+  while(Form.suggestion.container.element.firstChild) {
+    Form.suggestion.container.element.removeChild(Form.suggestion.container.element.firstChild)
   }
 
   matches.forEach(bird => {

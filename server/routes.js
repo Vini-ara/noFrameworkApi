@@ -43,7 +43,6 @@ async function routes(req, res)  {
   
   if(url === '/api/images' && method === 'POST') {
     await addImagesController.execute(req, res) 
-    //
 
     return res.end();
   }
