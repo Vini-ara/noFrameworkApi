@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 var birds;
 
 const Page = {
