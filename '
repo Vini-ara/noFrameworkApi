@@ -7,19 +7,12 @@ const Page = {
       click: () => {
         Page.nav.edit.element.classList.remove("active");
         Page.nav.insert.element.classList.add("active");
-
-        Page.section.editPhoto.classList.remove("visible");
-        Page.section.addPhoto.classList.add("visible");
       }
     },
     edit: {
       element: document.getElementById("editSelector"),
       click: () => {
-        Page.nav.insert.element.classList.remove("active");
-        Page.nav.edit.element.classList.add("active");
 
-        Page.section.editPhoto.classList.add("visible");
-        Page.section.addPhoto.classList.remove("visible");
       }
     } 
   },
@@ -234,10 +227,6 @@ const App = {
       if(!AddedPhotos.isListEmpty) AddedPhotos.submit.element.disabled = false; 
     })
 
-    Page.nav.insert.element.addEventListener('click', Page.nav.insert.click);
-
-    Page.nav.edit.element.addEventListener('click', Page.nav.edit.click);
-
     AddedPhotos.submit.element.addEventListener('click', AddedPhotos.submit.click);
   },
   init: async () => {
@@ -261,8 +250,8 @@ const Api = {
 }
 
 function populateSuggestion(matches) {
-  while(Form.suggestion.container.element.firstChild) {
-    Form.suggestion.container.element.removeChild(Form.suggestion.container.element.firstChild)
+  while(Form.suggestion.container.firstChild) {
+    Form.suggestion.container.removeChild(Form.suggestion.container.firstChild)
   }
 
   matches.forEach(bird => {

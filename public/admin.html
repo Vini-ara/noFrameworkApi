@@ -22,17 +22,17 @@
     <main>
       <section> 
         <div>
-          <nav>
-            <button class="active">
+          <nav id="sectionSelector">
+            <button class="active" id="insertSelector">
               Insert
             </button>
-            <button>
+            <button id="editSelector">
               Edit/Delete
             </button>
           </nav>
         </div>
 
-        <div class="content">
+        <div class="content addPhoto visible" id="addPhoto">
           <div class="filesAdded empty" id="images-submitted-preview">
             <p>Photos Added</p>
           </div>
@@ -55,6 +55,20 @@
             <button type="submit">Add Photo</button>
           </form>
           <button class="submit-all" id="submit-all" disabled> Submit All </button> 
+        </div>
+
+        <div class="content editPhoto" id="editPhoto">
+          <div class="card">
+            <img src="./backgroundImages/IMG_4336.jpg" alt="testImg">
+            <div class="cardInfo">
+              <p>Sai-azul</p>
+              <p>Dacnis Cayana</p>
+            </div>
+            <div class="actions">
+              <button class="eddit"></button>
+              <button class="delete"></button>
+            </div>
+          </div>          
         </div>
       </section> 
     </main>
