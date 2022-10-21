@@ -2,7 +2,7 @@ const fs = require('fs')
 const DbConnection = require('../database/index');
 
 class AddImagesService {
-  async execute(req, res) {
+  async execute(req) {
     let chunks = [];
 
     async function onEnd() {
@@ -19,8 +19,6 @@ class AddImagesService {
     const db = new DbConnection();
 
     const matoseco = await db.getMatoSecoDb();
-
-    console.log(data)
 
     await matoseco.collection("images").insertMany(data);
     

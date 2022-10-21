@@ -20,6 +20,39 @@ const Page = {
 
         Page.section.editPhoto.classList.add("visible");
         Page.section.addPhoto.classList.remove("visible");
+      },
+      createList: () => {
+        const images = Api.get();
+
+        images.forEach((post) => {
+          cardCreation(post);
+        });
+      },
+      cardCreation: (post) => {
+        const card = createElement('div')
+        const img = createElement('img')
+        img.src = post.image
+        img.alt = post.commonName
+        const info = createElement('div')
+        const name = createElement('p')
+        name.innerText = post.commonName
+        const sciName = createElement('p')
+        name.innerText = post.scientificName
+        const actions = createElement('div')
+        const editBtn = createElement('button') 
+        const delBtn = createElement('button')
+
+        card.classList.add('card')
+        card.appendChild(img)
+        card.appendChild(info)
+        card.appendChild(actions)
+
+        info.classList.add('cardInfo')
+        info.appendChild(name)
+        info.appendChild(sciName)
+
+        actions.appendChild(editBtn)
+        actions.appendChild(delBtn)
       }
     } 
   },
@@ -257,6 +290,10 @@ const Api = {
       body: body
     }
     await fetch('/api/images', opt);
+  },
+  get: async () => {
+    const images = await fetch('/api/images')
+    return images.data
   }
 }
 
