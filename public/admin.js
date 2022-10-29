@@ -20,27 +20,29 @@ const Page = {
 
         Page.section.editPhoto.classList.add("visible");
         Page.section.addPhoto.classList.remove("visible");
+        Page.nav.edit.createList();
       },
-      createList: () => {
-        const images = Api.get();
+      createList: async () => {
+        const images = await Api.get();
+        console.log(images)
 
         images.forEach((post) => {
-          cardCreation(post);
+          Page.nav.edit.cardCreation(post, Page.section.editPhoto);
         });
       },
-      cardCreation: (post) => {
-        const card = createElement('div')
-        const img = createElement('img')
+      cardCreation: (post, father) => {
+        const card = document.createElement('div')
+        const img = document.createElement('img')
         img.src = post.image
         img.alt = post.commonName
-        const info = createElement('div')
-        const name = createElement('p')
+        const info = document.createElement('div')
+        const name = document.createElement('p')
         name.innerText = post.commonName
-        const sciName = createElement('p')
+        const sciName = document.createElement('p')
         name.innerText = post.scientificName
-        const actions = createElement('div')
-        const editBtn = createElement('button') 
-        const delBtn = createElement('button')
+        const actions = document.createElement('div')
+        const editBtn = document.createElement('button') 
+        const delBtn = document.createElement('button')
 
         card.classList.add('card')
         card.appendChild(img)
@@ -53,6 +55,7 @@ const Page = {
 
         actions.appendChild(editBtn)
         actions.appendChild(delBtn)
+        father.appendChild(card)
       }
     } 
   },
@@ -293,7 +296,9 @@ const Api = {
   },
   get: async () => {
     const images = await fetch('/api/images')
-    return images.data
+    const data = await images.json();
+
+    return data;
   }
 }
 

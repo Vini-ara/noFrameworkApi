@@ -4,7 +4,7 @@ const url = process.env.MATO_SECO;
 
 class DbConnection {
   constructor() {
-    this.client = new MongoClient(url);
+    this.client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
   }
 
   async getMatoSecoDb() {

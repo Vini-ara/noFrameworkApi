@@ -20,7 +20,7 @@ class AddImagesService {
 
     const matoseco = await db.getMatoSecoDb();
 
-    await matoseco.collection("images").insertMany(data);
+    await matoseco.collection("images").insertMany([data]);
     
     await db.client.close();
   }
