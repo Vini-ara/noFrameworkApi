@@ -1,69 +1,205 @@
 var birds;
 
-const Page = {
-  nav: {
-    insert: {
-      element: document.getElementById("insertSelector"),
-      click: () => {
-        Page.nav.edit.element.classList.remove("active");
-        Page.nav.insert.element.classList.add("active");
-
-        Page.section.editPhoto.classList.remove("visible");
-        Page.section.addPhoto.classList.add("visible");
-      }
-    },
-    edit: {
-      element: document.getElementById("editSelector"),
-      click: () => {
-        Page.nav.insert.element.classList.remove("active");
-        Page.nav.edit.element.classList.add("active");
-
-        Page.section.editPhoto.classList.add("visible");
-        Page.section.addPhoto.classList.remove("visible");
-        Page.nav.edit.createList();
+const Api = {
+  post: async (body) => {
+    const opt = {
+      headers: {
+        'Content-Type': 'application/json'
       },
-      createList: async () => {
-        const images = await Api.get();
-        console.log(images)
-
-        images.forEach((post) => {
-          Page.nav.edit.cardCreation(post, Page.section.editPhoto);
-        });
-      },
-      cardCreation: (post, father) => {
-        const card = document.createElement('div')
-        const img = document.createElement('img')
-        img.src = post.image
-        img.alt = post.commonName
-        const info = document.createElement('div')
-        const name = document.createElement('p')
-        name.innerText = post.commonName
-        const sciName = document.createElement('p')
-        name.innerText = post.scientificName
-        const actions = document.createElement('div')
-        const editBtn = document.createElement('button') 
-        const delBtn = document.createElement('button')
-
-        card.classList.add('card')
-        card.appendChild(img)
-        card.appendChild(info)
-        card.appendChild(actions)
-
-        info.classList.add('cardInfo')
-        info.appendChild(name)
-        info.appendChild(sciName)
-
-        actions.appendChild(editBtn)
-        actions.appendChild(delBtn)
-        father.appendChild(card)
-      }
-    } 
+      method: "POST",
+      body: body
+    }
+    await fetch('/api/images', opt);
   },
-  section: {
-    addPhoto: document.getElementById("addPhoto"),
-    editPhoto: document.getElementById("editPhoto")
-  } 
+  get: async () => {
+    const images = await fetch('/api/images')
+    const data = await images.json();
+
+    return data;
+  }
 }
+
+class BasicDomElemnts {
+  constructor() {
+    this.addPhotoSection =  document.getElementById("addPhoto");
+    this.editPhotoSection = document.getElementById("editPhoto");
+  }
+}
+
+class SectionNavigation extends BasicDomElemnts {
+  constructor() {
+    this.addButton = document.getElementById("insertSelector");
+    this.editButton =  document.getElementById("editSelector");
+    this.addButton.addEventListener('click', this.SelectAddSection);
+    this.editButton.addEventListener('click', this.SelectEditSection);
+  }
+
+  SelectEditSection() {
+    this.addButton.classList.remove("active") 
+    this.editButton.classList.add("active")
+
+    this.editPhotoSection.classList.add("visible")
+    this.addPhotoSection.classList.remove("visible")
+  }
+
+  SelectAddSection() {
+    this.addButton.classList.add("active") 
+    this.editButton.classList.remove("active")
+
+    this.editPhotoSection.classList.remove("visible")
+    this.addPhotoSection.classList.add("visible")
+  }
+}
+
+class EditSection {
+  constructor(sectionNavigation) {
+    this.sectionNavigation = sectionNavigation
+    this.sectionNavigation.editButton.addEventListener('click', this.MountEditSection)
+  }
+
+  async MountEditSection() {     
+    const images = await Api.get();
+
+    images.forEach((post) => {
+      CardCreation(post, this.sectionNavigation.editPhotoSection);
+    });
+  }
+
+  CardCreation(post, fatherElement) {
+    const card = document.createElement('div')
+    const img = document.createElement('img')
+
+    img.src = post.image
+    img.alt = post.commonName
+
+    const info = document.createElement('div')
+
+    const name = document.createElement('p')
+    name.innerText = post.commonName
+
+    const sciName = document.createElement('p')
+    sciName.innerText = post.scientificName
+
+    const actions = document.createElement('div')
+    const editBtn = document.createElement('button') 
+    const delBtn = document.createElement('button')
+
+    card.classList.add('card')
+    card.appendChild(img)
+    card.appendChild(info)
+    card.appendChild(actions)
+
+    info.classList.add('cardInfo')
+    info.appendChild(name)
+    info.appendChild(sciName)
+
+    actions.appendChild(editBtn)
+    actions.appendChild(delBtn)
+    fatherElement.appendChild(card)
+  }
+}
+
+class Form {
+  constructor(suggestions) {
+    this.suggestions = suggestions
+
+    this.formElement = document.getElementById('photo-form') 
+    this.photoInput = document.getElementById('file-upload')
+    this.commonNameInput = document.getElementById('bird-name')
+    this.scientificNameInput = document.getElementById('scientific-name')
+
+    this.previewContainer = document.getElementById('file-upload-container')
+    this.previewImg = document.createElement('img')
+    this.previewImgWrapper = document.createElement('span')
+  }
+
+  handlePhotoInput(e) {
+    if(e.target.files.length === 0) return;
+
+    var reader = new FileReader();
+
+    reader.onload = function(a) {
+      this.previewImg.src = a.target.result
+    }
+
+    reader.readAsDataURL(e.target.files[0]);
+
+    this.previewImg.setAttribute('alt', "image preview");
+    this.previewImg.classList.add("img-input-preview")
+
+    this.previewImgWrapper.append(this.previewImg)
+    this.previewContainer.appendChild(this.previewImgWrapper);
+  }
+  
+  handleCommonNameFocus() {
+    if(this.suggestions.matches.length > 0) this.suggestions.suggestionsContainer.classList.add('active');
+  } 
+
+  handleCommonNameInput(e) {
+    this.suggestions.matches = [];
+
+    if(e.target.value.length < 2) {
+      this.suggestions.suggestionsContainer.classList.remove('active');
+      return;
+    }
+
+    birds.forEach(bird => {
+      if(bird.common.includes(e.target.value) && this.suggestions.matches.length < 10)
+        this.suggestions.addSuggestion(bird);
+    });
+
+    this.suggestions.populateSuggestion();
+
+    if(this.suggestions.matches.length > 0) 
+      this.suggestions.suggestionsContainer.classList.add('active');
+    else 
+      this.suggestions.suggestionsContainer.classList.remove('active');
+  }
+   
+  handleImgWrapperClick() {
+    this.photoInput.value = ""
+
+    this.previewImgWrapper.removeChild(this.previewImg)
+    this.previewContainer.removeChild(this.previewImgWrapper)
+  }
+
+  clear() {
+    this.formElement.reset()
+    this.suggestions.matches = []
+  }   
+}
+
+class FormSuggestions {
+  constructor() {
+    this.matches = []
+
+    this.suggestionsContainer = document.getElementById('suggestion')
+  }
+
+  addSuggestion(element) {
+    this.matches.push(element)
+  }
+
+  populateSuggestion() {
+    while(this.suggestionsContainer.firstChild) {
+      this.suggestionsContainer.removeChild(this.suggestionsContainer.firstChild)
+    }
+
+    this.matches.forEach(bird => {
+      let suggestion = document.createElement('p')
+      suggestion.innerText = bird.common 
+
+      let sciName = document.createElement('i')
+      sciName.innerText = bird.scientific
+
+      suggestion.appendChild(document.createElement('br'))
+      suggestion.appendChild(sciName)
+
+      this.suggestionsContainer.appendChild(suggestion)
+    })
+  }
+}
+
 
 const Form = {
   form: document.getElementById('photo-form'),
@@ -283,42 +419,6 @@ const App = {
   }
 }
 
-const Api = {
-  post: async (body) => {
-    const opt = {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: "POST",
-      body: body
-    }
-    await fetch('/api/images', opt);
-  },
-  get: async () => {
-    const images = await fetch('/api/images')
-    const data = await images.json();
 
-    return data;
-  }
-}
-
-function populateSuggestion(matches) {
-  while(Form.suggestion.container.element.firstChild) {
-    Form.suggestion.container.element.removeChild(Form.suggestion.container.element.firstChild)
-  }
-
-  matches.forEach(bird => {
-    let suggestion = document.createElement('p')
-    suggestion.innerText = bird.common 
-
-    let sciName = document.createElement('i')
-    sciName.innerText = bird.scientific
-
-    suggestion.appendChild(document.createElement('br'))
-    suggestion.appendChild(sciName)
-
-    Form.suggestion.container.element.appendChild(suggestion)
-  })
-}
 
 await App.init();
