@@ -18,7 +18,7 @@ const Api = {
     return data;
   },
   getBirds: async () => {
-    let birdData = await fetch('brazilBirds.json').then(response => response.json()).then(res => (birds = res.birds));
+    await fetch('brazilBirds.json').then(response => response.json()).then(res => (birds = res.birds));
   }
 }
 
@@ -81,9 +81,17 @@ class EditSection {
   async MountEditSection() {     
     const images = await Api.get();
 
+    this.ClearElement(this.sectionNavigation.editPhotoSection)
+
     images.forEach((post) => {
       this.CardCreation(post, this.sectionNavigation?.editPhotoSection);
     });
+  }
+
+  ClearElement(element) {
+    while(element.firstChild) {
+      element.removeChild(element.firstChild)
+    }
   }
 
   CardCreation(post, fatherElement) {
@@ -92,6 +100,7 @@ class EditSection {
 
     img.src = post.image
     img.alt = post.commonName
+    img.classList.add('photo')
 
     const info = document.createElement('div')
 
@@ -102,8 +111,19 @@ class EditSection {
     sciName.innerText = post.scientificName
 
     const actions = document.createElement('div')
+    actions.classList.add('actions')
+
     const editBtn = document.createElement('button') 
+    const editImg = document.createElement('img')
+    editBtn.classList.add('edit')
+    editImg.src = './assets/edit.svg'
+    editBtn.appendChild(editImg)
+
     const delBtn = document.createElement('button')
+    const delImg = document.createElement('img')
+    delBtn.classList.add('delete')
+    delImg.src = './assets/trash.svg'
+    delBtn.appendChild(delImg)
 
     card.classList.add('card')
     card.appendChild(img)
