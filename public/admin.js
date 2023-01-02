@@ -1,4 +1,4 @@
-var birds;
+let birds = []
 
 const Api = {
   post: async (body) => {
@@ -16,6 +16,9 @@ const Api = {
     const data = await images.json();
 
     return data;
+  },
+  getBirds: async () => {
+    let birdData = await fetch('brazilBirds.json').then(response => response.json()).then(res => (birds = res.birds));
   }
 }
 
@@ -37,8 +40,12 @@ class SectionNavigation extends BasicDomElemnts {
   }
 
   setHandlers() {
-    this.addButton?.addEventListener('click', this.SelectAddSection);
-    this.editButton?.addEventListener('click', this.SelectEditSection);
+    this.addButton?.addEventListener('click', function() {
+      this.SelectAddSection()
+    }.bind(this), false);
+    this.editButton?.addEventListener('click', function() {
+      this.SelectEditSection()
+    }.bind(this), false);
   }
 
   SelectEditSection() {
@@ -114,8 +121,8 @@ class EditSection {
 }
 
 class Form {
-  constructor(suggestions, addedPhotosBuffer) {
-    this.suggestions = suggestions
+  constructor( addedPhotosBuffer) {
+    this.suggestions = new FormSuggestions()
     this.addedPhotosBuffer = addedPhotosBuffer
 
     this.formElement = document.getElementById('photo-form') 
@@ -131,16 +138,30 @@ class Form {
   }
 
   setHandlers() {
-    this.formElement.addEventListener('submit', this.handleFormSubmission)
-    this.photoInput.addEventListener('input', this.handlePhotoInput)
+    this.formElement.addEventListener('submit', function(e) {
+      this.handleFormSubmission(e)
+    }.bind(this), false)
+    this.photoInput.addEventListener('input', function(e) {
+      this.handlePhotoInput(e)
+    }.bind(this), false)
 
-    this.commonNameInput.addEventListener('focus', this.handleCommonNameFocus)
-    this.commonNameInput.addEventListener('input', this.handleCommonNameInput)
+    this.commonNameInput.addEventListener('focus', function() {
+      this.handleCommonNameFocus()
+    }.bind(this), false)
+    this.commonNameInput.addEventListener('input', function(e) {
+      this.handleCommonNameInput(e)
+    }.bind(this), false)
 
-    this.previewImgWrapper.addEventListener('click', this.handleImgWrapperClick)
+    this.previewImgWrapper.addEventListener('click', function () {
+      this.handleImgWrapperClick()
+    }.bind(this), false)
 
-    this.suggestions.suggestionsContainer.addEventListener('click', this.handleSuggestionClick)
-    document.addEventListener('click', this.handleSuggestionClose)
+    this.suggestions.suggestionsContainer.addEventListener('click', function (e) {
+      this.handleSuggestionClick(e)
+    }.bind(this), false)
+    document.addEventListener('click', function (e) {
+      this.handleSuggestionClose(e)
+    }.bind(this), false)
   }
 
   handlePhotoInput(e) {
@@ -150,7 +171,7 @@ class Form {
 
     reader.onload = function(a) {
       this.previewImg.src = a.target.result
-    }
+    }.bind(this)
 
     reader.readAsDataURL(e.target.files[0]);
 
@@ -162,14 +183,15 @@ class Form {
   }
   
   handleCommonNameFocus() {
-    if(this.suggestions.matches.length > 0) this.suggestions.suggestionsContainer.classList.add('active');
+    if(this.suggestions?.matches.length > 0) this.suggestions?.suggestionsContainer.classList.add('active');
   } 
 
   handleCommonNameInput(e) {
-    this.suggestions.matches = [];
+    this.suggestions.matches = []
 
     if(e.target.value.length < 2) {
       this.suggestions.suggestionsContainer.classList.remove('active');
+      this.suggestions.matches = []
       return;
     }
 
@@ -202,7 +224,7 @@ class Form {
       this.commonNameInput.value = e.target.innerText.split('\n')[0];
     }
 
-    this.suggestion.suggestionsContainer.element.classList.remove('active')
+    this.suggestions.suggestionsContainer.classList.remove('active')
   }
 
   handleSuggestionClose(e) {
@@ -241,17 +263,17 @@ class Form {
     addedImgWrapper.classList.add(`${this.addedPhotosBuffer.queue.length - 1}`);
     addedImgWrapper.appendChild(addedImg);
 
-    addedImgWrapper.addEventListener('click', (e) => {
+    addedImgWrapper.addEventListener('click', function (e) {
       const listIdx = Number(e.target.classList[1]);
 
       if(listIdx == NaN) return;
 
       this.addedPhotosBuffer.queue.splice(listIdx, 1, '');
 
-      this.addedPhotosBuffer.checkIsListEmpty();
-
       this.addedPhotosBuffer.vizualizationContainer.removeChild(e.target);
-    })
+
+      this.addedPhotosBuffer.checkIsListEmpty();
+    }.bind(this), false)
     
     this.addedPhotosBuffer.vizualizationContainer.classList.remove("empty");
     this.addedPhotosBuffer.vizualizationContainer.appendChild(addedImgWrapper);
@@ -260,7 +282,7 @@ class Form {
 
     this.suggestions.matches = [];
 
-    this.clear();
+    Form.clear();
 
     this.addedPhotosBuffer.checkIsListEmpty();
 
@@ -269,7 +291,7 @@ class Form {
 
 
   static clear() {
-    this.formElement.reset()
+    document.getElementById('photo-form').reset()
     // this.suggestions.matches = []
   }   
 }
@@ -317,13 +339,17 @@ class AddedPhotosBuffer {
   }
 
   setHandlers() {
-    this.submitButton.addEventListener('click', this.handleSubmit)
+    this.submitButton.addEventListener('click', function() {
+    this.handleSubmit()
+    }, false)
   }
 
   checkIsListEmpty() {
-    this.queue.forEach(e => {
+    this.isEmpty = true
+
+    this.queue.forEach(function (e) {
       if(typeof(e) === "object") this.isEmpty = false
-    }) 
+    }.bind(this)) 
 
     if(this.isEmpty) {
       this.vizualizationContainer.classList.add("empty")
@@ -359,21 +385,10 @@ class App {
 
     this.addedPhotosBuffer = new AddedPhotosBuffer()
 
-    this.formSuggestions = new FormSuggestions()
+    this.form = new Form(this.addedPhotosBuffer)
 
-    this.form = new Form(this.formSuggestions, this.addedPhotosBuffer)
-
-    this.birds = []
-
-    this.init()
-  }
-
-  async init() {
-    let birdData = await fetch('brazilBirds.json').then(response => response.json());
-    this.birds = birdData.birds
+    Api.getBirds()
   }
 }
 
-const app = new App();
-
-birds = app.birds
+const app = new App()
