@@ -87,7 +87,7 @@ const DOM = {
     ModalPhoto(index){
         let container = document.getElementById("modal-img")
 
-        let code = `<img id='modalImg' src="./photos/${Photos[index]}.JPG" alt="">`
+        let code = `<img id='modalImg' src="./photos/${Photos[index]}.jpg" alt="">`
 
         container.innerHTML = code
 

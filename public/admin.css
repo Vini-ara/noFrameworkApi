@@ -9,12 +9,19 @@ main {
 }
 
 .content {
-  min-height: 100vh;
+  min-height: 80vh;
   min-width: 100%;
 
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
+
+  visibility: hidden;
+}
+
+.content.visible {
+  display: flex;
+  visibility: visible;
 }
 
 /* page nav selector */
