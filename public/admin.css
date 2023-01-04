@@ -408,3 +408,91 @@ form button[type='submit']:hover {
   margin-left: auto;
   margin-right: 1rem;
 }
+
+/* ---- Modal ---- */
+
+.modal-overlay {
+  z-index: 999;
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.6);
+  visibility: hidden;
+  opacity: 0;
+  display: none;
+}
+
+.modal-overlay.visible {
+  visibility: visible;
+  display: flex;
+  opacity: 1;
+}
+
+.modal-content {
+  visibility: hidden;
+  opacity: 0;
+  display: none;
+}
+
+.modal-content.visible {
+  visibility: visible;
+  opacity: 1;
+  display: flex;
+}
+
+.edit-modal {
+  flex-direction: column;
+  background: rgb(250, 237, 178);
+
+  border-radius: 2rem;
+
+  padding: 2rem 2.5rem;
+}
+
+.edit-modal h2 {
+  color: var(--dark-blue);
+  margin-bottom: 1rem;
+}
+
+.edit-modal label {
+  color: var(--cian);
+  font-weight: bold;
+  margin-bottom: .5rem;
+}
+
+.edit-modal input {
+  background: rgba(0, 0, 0, .3);
+  border-style: none;
+  outline: none;
+  border-radius: .5rem;
+  padding: .2rem .4rem;
+  color: white;
+  font-weight: bold;
+}
+
+.modal-actions {
+  padding-top: 1rem;
+  margin-left: auto;
+}
+
+.modal-button {
+  padding: .5rem; 
+  outline: none;
+  border: none;
+  border-radius: .5rem;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+}
+
+.modal-button + .modal-button {
+  margin-left: .5rem;
+}
+
+.red {
+  background: red;
+}
+
+.blue {
+  background: var(--dark-blue);
+}
