@@ -429,6 +429,8 @@ form button[type='submit']:hover {
 }
 
 .modal-content {
+  height: 50vh;
+  width: 50vw;
   visibility: hidden;
   opacity: 0;
   display: none;
@@ -437,19 +439,18 @@ form button[type='submit']:hover {
 .modal-content.visible {
   visibility: visible;
   opacity: 1;
-  display: flex;
-}
 
-.edit-modal {
+  display: flex;
   flex-direction: column;
+
   background: rgb(250, 237, 178);
 
   border-radius: 2rem;
-
   padding: 2rem 2.5rem;
 }
 
 .edit-modal h2 {
+  font-size: 2.5rem;
   color: var(--dark-blue);
   margin-bottom: 1rem;
 }
@@ -457,11 +458,14 @@ form button[type='submit']:hover {
 .edit-modal label {
   color: var(--cian);
   font-weight: bold;
+  font-size: 1.5rem;
   margin-bottom: .5rem;
 }
 
 .edit-modal input {
   background: rgba(0, 0, 0, .3);
+  height: 2.25rem;
+  font-size: 1.25rem;
   border-style: none;
   outline: none;
   border-radius: .5rem;
@@ -470,23 +474,38 @@ form button[type='submit']:hover {
   font-weight: bold;
 }
 
+.remove-modal {
+  text-align: center;
+}
+
+.remove-modal h2 {
+  font-size: 3rem; 
+}
+
 .modal-actions {
+  margin-top: auto;
   padding-top: 1rem;
   margin-left: auto;
 }
 
 .modal-button {
-  padding: .5rem; 
+  padding: .75rem; 
+  font-size: 1.25rem;
   outline: none;
   border: none;
   border-radius: .5rem;
   cursor: pointer;
   color: white;
   font-weight: bold;
+  transition: filter .2s;
 }
 
 .modal-button + .modal-button {
   margin-left: .5rem;
+}
+
+.modal-button:hover {
+  filter: brightness(0.8);
 }
 
 .red {

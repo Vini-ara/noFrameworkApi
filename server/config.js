@@ -2,6 +2,7 @@ const { join } = require("path");
 
 const rootDir = join(__dirname, '../');
 const publicDir = join(rootDir, '/public');
+const pagesDir = join(publicDir, '/pages')
 
 const ContentTypes = {
     '.js': 'text/javascript',
@@ -13,8 +14,13 @@ const ContentTypes = {
     '.json': 'application/json'
 }
 
+const Pages = ["home", "admin"];
+
+
 module.exports = {
 	ContentTypes,
+  Pages,
 	rootDir,
-	publicDir
+	publicDir,
+  pagesDir
 }

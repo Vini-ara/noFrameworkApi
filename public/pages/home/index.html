@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../lib/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Mato-Seco Fotos</title>
+  </head>
+  <body onscroll="Header.Change()">
+    <header style="display: flex; justify-content: space-between; align-items: center;" id="header">
+      <div class="h-logo"> 
+        <a href="index.html" id="h-Logo"><h1>Mato seco</h1></a>
+      </div>
+      <div class="navigation">
+        <nav class="link-list">
+          <span><a href="#m-about">About</a></span>
+          <span><a href="#M-photos">Photos</a></span>
+          <span><a href="#m-contact">Contact</a></span>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <section id="m-about">
+        <div id="background">
+        </div>
+        <div id="m-about-content-container">
+          <div id="m-logo"></div>
+          <div id="m-division-bar"></div>
+          <div id="m-about-text-container">
+            <div id="m-about-text">
+              <h4> Sobre Mim</h4>
+              <p>Olá! Sou Vinícius o criador desse site e dono dessas fotinhas. Fotografo aves desde pequeno e sou apaixonado por elas. Aqui se encontram as minhas melhores fotos das aves mais bonitas do cerrado, espero que Gostem!!</p>
+            </div>               
+          </div>
+          <div id="scrollDown"> <a href="#M-photos"><img src="./assets/expand_more_white_24dp.svg" alt=""></a></div>
+        </div>
+      </section>
+      <section class="m-photos" id="M-photos">
+        <div class="container">
+          <h4 id="m-header">Photos</h4>
+          <div id="m-photos-content">
+
+          </div>
+        </div>
+      </section>
+      <section id="m-contact">
+        <h4>Contact Me</h4>
+        <div id="m-contact-container">
+          <div id="m-contact-text">
+            <p>Gostou de alguma das fotos??</p> <br> <p>Entre em contato comigo pelo campo de e-mail ao lado ou pelos contatos abaixo para adquirir um quadro emoldurado com alguma dessa belezuras!!</p><br>
+            <div class="Contact-logo-container">
+              <div class="social-icon">
+                <div class="Contact-logo">
+                  <a href="https://www.instagram.com/mato.seco_/"><img src="./assets/iconmonstr-instagram-11.svg" alt="instagram"></a>
+                </div>
+                <span>@mato.seco_</span>
+              </div>
+              <div class="social-icon">
+                <div class="Contact-logo">
+                  <a href="mailto:vinisiarbigu02@gmail.com"><img src="/assets/iconmonstr-email-12.svg" alt="email"></a>
+                </div>
+                <span><a href="mailto:vinisiarbigu02@gmail.com">vinisiarbigu02@gmail.com</a></span>
+              </div>   
+            </div>
+          </div>
+          <div id="m-contact-form">
+            <form action="mailto:vinisiarbigu02@gmail.com" method="POST" enctype="text/plain" name="EmailForm">
+              <div class="input-container">
+                <input type="text" size="19" name="Contact-Name" placeholder="Name" required>
+                <input type="email" name="Contact-Email" placeholder="Email" required>
+              </div>
+              <textarea name="Contact-Message" rows="6" placeholder="Message" required>
+              </textarea><br>
+              <button type="submit" value="Submit">Send</button>
+            </form>
+          </div>
+        </div>    
+      </section>
+      <section class="modal-overlay">
+        <div class="close">
+          <button onclick="Modal.close()">
+            <img src="./assets/close_black_24dp.svg" alt="close modal button">
+          </button>
+        </div>
+        <div class="nav">
+          <button id="modalPrev" onclick="NextPhoto.ModalPrev()"><img class="modal-navigation" src="./assets/left-arrow.svg" alt=""></button>
+        </div>
+        <div class="modal">
+          <div class="img-container" id="modal-img">
+          </div>
+        </div>
+        <div class="nav">
+          <button onclick="NextPhoto.ModalNext()"><img class="modal-navigation" src="./assets/right-arrow.svg" alt=""></button>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <h4>Mato Seco</h4>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+    <script src="/script.js"></script>
+  </body>
+</html>

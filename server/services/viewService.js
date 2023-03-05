@@ -3,15 +3,15 @@ const fsPromises = require('fs/promises');
 const { join, extname } = require('path');
 const { createReadStream } = require('fs');
 
-const { publicDir } = require('../config');
+const { pagesDir } = require('../config');
 
 class Service {
 	createStream(filename) {
-	    return fs.createReadStream(filename)
+    return fs.createReadStream(filename)
 	}
 
 	async getFileInfo(file) {
-		const fullFilePath = join(publicDir, file);
+		const fullFilePath = join(pagesDir, file);
 
 		await fsPromises.access(fullFilePath)
 		const fileType = extname(file)

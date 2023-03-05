@@ -66,8 +66,11 @@ class SectionNavigation extends BasicDomElemnts {
 }
 
 class EditSection {
-  constructor(sectionNavigation) {
+  constructor(sectionNavigation, editModal, removeModal) {
     this.sectionNavigation = sectionNavigation
+
+    this.editModal = editModal
+    this.removeModal = removeModal
 
     this.setHandlers();
   }

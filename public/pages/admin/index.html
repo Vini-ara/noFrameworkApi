@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../lib/style.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="admin.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
     <title>Mato-Seco Fotos Admin Page</title>
@@ -58,22 +58,23 @@
         </div>
 
         <div class="content editPhoto" id="editPhoto">
-          <div class="card">
-            <img src="./backgroundImages/IMG_4336.jpg" alt="testImg">
-            <div class="cardInfo">
-              <p>Sai-azul</p>
-              <p>Dacnis Cayana</p>
-            </div>
-            <div class="actions">
-              <button class="edit"></button>
-              <button class="delete"></button>
-            </div>
-          </div>          
+          <!-- <div class="card"> -->
+          <!--   <img src="./backgroundImages/IMG_4336.jpg" alt="testImg"> -->
+          <!--   <div class="cardInfo"> -->
+          <!--     <p>Sai-azul</p> -->
+          <!--     <p>Dacnis Cayana</p> -->
+          <!--   </div> -->
+          <!--   <div class="actions"> -->
+          <!--     <button class="edit"></button> -->
+          <!--     <button class="delete"></button> -->
+          <!--   </div> -->
+          <!-- </div>           -->
         </div>
       </section> 
-      <div class="modal-overlay visible"> 
-        <div class="modal-content edit-modal visible"> 
-          <h2>Edtar foto</h2>
+
+      <div class="modal-overlay"> 
+        <div class="modal-content edit-modal"> 
+          <h2>Editar foto</h2>
           <label for="editBirdName">Bird name</label>  
           <input type="text" name="editBirdName" class="edit-common-name" id="edit-bird-name" autocomplete="off">
           <div class="modal-actions">
@@ -83,9 +84,9 @@
         </div>
         <div class="modal-content remove-modal"> 
           <h2>Deseja mesmo remover a imagem?</h2>
-          <div>
-            <button class="modal-button red">Cancelar</button>
-            <button class="modal-button blue">Editar</button>
+          <div class="modal-actions">
+            <button class="modal-button blue">Cancelar</button>
+            <button class="modal-button red">Remover</button>
           </div>
         </div>
       </div>
@@ -93,6 +94,6 @@
     <footer>
         <h4>Mato Seco</h4>
     </footer>
-    <script src="./admin.js" type="module"></script>
+    <script src="./index.js" type="module"></script>
   </body>
 </html>
