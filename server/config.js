@@ -11,7 +11,7 @@ const ContentTypes = {
     '.jpg': 'image/jpeg',
     '.JPG': 'image/jpeg',
     '.svg': 'image/svg+xml',
-    '.json': 'application/json'
+    '.json': 'application/json',
 }
 
 const Pages = ["home", "admin"];
